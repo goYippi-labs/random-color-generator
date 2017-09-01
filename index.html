@@ -25,26 +25,17 @@
 				float: left;
 				transition: background-color 0.25s;
 			}
-			.color-2 .color-box {
-				width: 50%;
-			}
-			.color-3 .color-box {
-				width: 33.333%;
-			}
-			.color-4 .color-box {
-				width: 25%;
-			}
-			.color-5 .color-box {
-				width: 20%;
-			}
-			.color-6 .color-box {
-				width: 16.666%;
-			}
             .input-box {
                 max-width: 280px;
                 margin: 0 auto;
                 background-color: #fff;
             }
+			.color-7 .input-box {
+				font-size: 0.6em;
+			}
+			.color-10 .input-box {
+				display: none;
+			}
             .input-box-inner {
                 padding: 20px;
             }
@@ -66,6 +57,13 @@
 			.output-rgb {
                 margin-right: 0;
             }
+			.add-remove {
+				position: absolute;
+				left: 0;
+				top: 50%;
+				margin-top: -20px;
+				width: 100%;
+			}
 			.add-remove span {
 				cursor: pointer;
 				padding: 10px;
@@ -73,14 +71,14 @@
 				line-height: 1;
 				background-color: #FFF;
 				position: absolute;
-				top: 50%;
-				margin-top: -20px;
+				top: 0;
 				line-height: 20px;
 				width: 20px;
 				height: 20px;
 				display: inline-block;
 				text-align: center;
 				outline: none;
+				overflow: hidden;
 			}
 			.add-remove .add {
 				right: 0;
@@ -105,39 +103,28 @@
                 	padding: 10px 20px;
             	}
 				.color-box {
-					float: none;
+					width: 100%;
 					min-height: 80px;
 				}
-				.color-2 .color-box {
-					width: 100%;
-					height: 50%;
+				.color-7 .color-box {
+					min-height: 60px;
 				}
-				.color-3 .color-box {
-					width: 100%;
-					height: 33.333%;
+				.color-10 .color-box {
+					min-height: 0;
 				}
-				.color-4 .color-box {
-					width: 100%;
-					height: 25%;
-				}
-				.color-5 .color-box {
-					width: 100%;
-					height: 20%;
-				}
-				.color-6 .color-box {
-					width: 100%;
-					height: 16.666%;
-				}
-
-				.add-remove span {
+				.add-remove {
 					margin-top: 0;
+					top: 0;
+					left: auto;
+					right: 0;
+					width: auto;
+					height: 100%;
 				}
 				.add-remove .add {
 					top: auto;
 					bottom: 0;
 				}
 				.add-remove .remove {
-					top: 0;
 					left: auto;
 					right: 0;
 				}
@@ -170,6 +157,9 @@
 
 		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
         <script type="text/javascript">
+			var maxItems = 8;
+			var windowWidth = jQuery(window).width();
+
            	var randomColor = function(str) {
                 var chars = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
 				var color = '';
@@ -196,6 +186,7 @@
 			var addBox = function() {
 				$('.color-box:last').clone().removeAttr('id').insertAfter('.color-box:last').attr( 'id', 'box-' + $('.color-box').length );
 				$('body').addClass('color-' + $('.color-box').length);
+				boxWidth();
 				$('.color-box:last').find('.reload').data('index', $('.color-box').length);
 				colorOutput( randomColor(), $('.color-box').length );
 				checkButtons();
@@ -205,8 +196,17 @@
 				var length = $('.color-box').length;
 				$('.color-box:last').remove();
 				$('body').removeClass('color-' + length);
+				boxWidth();
 				checkButtons();
             }
+
+			var boxWidth = function() {
+				if (window.innerHeight > window.innerWidth || window.innerWidth <= 600) {
+		   			$('.color-box').css({'width' : '100%', 'height' : 100/$('.color-box').length + '%'});
+				} else {
+		   			$('.color-box').css({'width' : 100/$('.color-box').length + '%', 'height' : '100%'});
+				}
+			}
 
 			var checkButtons = function() {
 				var add = '<span class="add">+</span>';
@@ -217,7 +217,7 @@
 				if ($('.color-box').length == 1) {
 					var remove = '';
 				}
-				if ($('.color-box').length >= 6) {
+				if ($('.color-box').length >= maxItems) {
 					var add = '';
 				}
 
@@ -227,6 +227,16 @@
             jQuery(document).ready(function($) {
                 colorOutput( randomColor(), 1 );
 				checkButtons();
+
+				$(window).resize(function(e) {
+					if ($(window).width() != windowWidth) {
+						boxWidth();
+					}
+				});
+
+				$(window).on("orientationchange",function(){
+					boxWidth();
+				});
             });
 
 			jQuery(document).on('click', '.reload', function() {
