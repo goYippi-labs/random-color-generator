@@ -205,7 +205,6 @@
 				$('#box-' + id).css('background-color', '#' + color);
                 $('#box-' + id + ' .output-hex').show().empty().append( '<span class="output-label">HEX: </span>#' + color );
                 $('#box-' + id + ' .output-rgb').show().empty().append( '<span class="output-label">RGB: </span>' + hexToRgb(color) );
-				download.append('Color ' + id + ' HEX:#' + color + ' RGB:' + hexToRgb(color) + ';\n');
             }
 
 			var addBox = function() {
@@ -225,9 +224,6 @@
 				$('body').removeClass('color-' + length);
 				boxWidth();
 				checkButtons();
-				text.splice(-2, 1);
-				$('.save').attr('href','#');
-				$('textarea.download').text(text.join(';'));
             }
 
 			var boxWidth = function() {
@@ -260,6 +256,12 @@
 
 				// Leo's comment: http://stackoverflow.com/questions/27398074/saving-a-data-from-html-form-to-text-file-with-jquery-javascript
 				download_link.onclick = function() {
+					$('textarea.download').empty();
+
+					$('.color-box').each(function(index) {
+						$('textarea.download').append('Color ' + (index + 1) + ' ' + $(this).find('.output-hex').text() + ' ' + $(this).find('.output-rgb').text() + ';\n');
+					});
+
     				download_link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(download.value);
     				download_link.download = 'your-colors.txt';
 				};
