@@ -57,14 +57,16 @@
 			.output-rgb {
                 margin-right: 0;
             }
-			.add-remove {
+			.add-remove, .download-box {
 				position: absolute;
 				left: 0;
 				top: 50%;
 				margin-top: -20px;
 				width: 100%;
 			}
-			.add-remove span {
+			.add-remove span, .download-box .save {
+				font-family: 'Material Icons';
+				font-size: 24px;
 				cursor: pointer;
 				padding: 10px;
 				font-size: 2em;
@@ -76,6 +78,7 @@
 				width: 20px;
 				height: 20px;
 				display: inline-block;
+				text-indent: -6px;
 				text-align: center;
 				outline: none;
 				overflow: hidden;
@@ -85,7 +88,20 @@
 			}
 			.add-remove .remove {
 				left: 0;
-				line-height: 15px;
+			}
+			.download {
+				visibility: hidden;
+			}
+			.download-box {
+				top: auto;
+				bottom: 60px;
+				margin-top: 0;
+			}
+			.download-box .save {
+				color: #000;
+				text-decoration: none;
+				top: 0;
+				right: 0;
 			}
 			@media screen and (min-width: 601px) {
 				.color-3 .input-box {
@@ -156,10 +172,17 @@
 			</div>
 		</div>
 
+		<div class="download-box">
+			<textarea class="download"></textarea>
+			<a href="#" class="save">&#xE2C4;</a>
+		</div>
+
 		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
         <script type="text/javascript">
 			var maxItems = 8;
 			var windowWidth = jQuery(window).width();
+			var download = document.querySelector('textarea.download');
+			var download_link = document.querySelector('.save');
 
            	var randomColor = function(str) {
                 var chars = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
@@ -182,6 +205,7 @@
 				$('#box-' + id).css('background-color', '#' + color);
                 $('#box-' + id + ' .output-hex').show().empty().append( '<span class="output-label">HEX: </span>#' + color );
                 $('#box-' + id + ' .output-rgb').show().empty().append( '<span class="output-label">RGB: </span>' + hexToRgb(color) );
+				download.append('Color ' + id + ' HEX:#' + color + ' RGB:' + hexToRgb(color) + ';\n');
             }
 
 			var addBox = function() {
@@ -195,10 +219,15 @@
 
 			var removeBox = function() {
 				var length = $('.color-box').length;
+				var text = $('textarea.download').text().split(';');
+
 				$('.color-box:last').remove();
 				$('body').removeClass('color-' + length);
 				boxWidth();
 				checkButtons();
+				text.splice(-2, 1);
+				$('.save').attr('href','#');
+				$('textarea.download').text(text.join(';'));
             }
 
 			var boxWidth = function() {
@@ -210,8 +239,8 @@
 			}
 
 			var checkButtons = function() {
-				var add = '<span class="add">+</span>';
-				var remove = '<span class="remove">-</span>';
+				var add = '<span class="add">&#xE145;</span>';
+				var remove = '<span class="remove">&#xE15B;</span>';
 
 				$('.add-remove').remove();
 
@@ -228,6 +257,12 @@
             jQuery(document).ready(function($) {
                 colorOutput( randomColor(), 1 );
 				checkButtons();
+
+				// Leo's comment: http://stackoverflow.com/questions/27398074/saving-a-data-from-html-form-to-text-file-with-jquery-javascript
+				download_link.onclick = function() {
+    				download_link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(download.value);
+    				download_link.download = 'your-colors.txt';
+				};
 
 				$(window).resize(function(e) {
 					if ($(window).width() != windowWidth) {
@@ -252,6 +287,6 @@
 				removeBox();
 			});
         </script>
-		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Material+Icons|Source+Sans+Pro:400,700" rel="stylesheet">
     </body>
 </html>
