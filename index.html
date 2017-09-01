@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Random Color | goYippi labs</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style type="text/css">
+			html, body {
+				width: 100%;
+				height: 100%;
+			}
+            body {
+                font-family: 'Source Sans Pro', Arial, sans-serif;
+                font-size: 1.063em;
+                line-height: 1.5;
+                color: #000;
+                margin: 0;
+                padding: 0;
+				position: relative;
+            }
+			.color-box {
+				width: 100%;
+				height: 100%;
+				float: left;
+				transition: background-color 0.25s;
+			}
+			.color-2 .color-box {
+				width: 50%;
+			}
+			.color-3 .color-box {
+				width: 33.333%;
+			}
+			.color-4 .color-box {
+				width: 25%;
+			}
+			.color-5 .color-box {
+				width: 20%;
+			}
+			.color-6 .color-box {
+				width: 16.666%;
+			}
+            .input-box {
+                max-width: 300px;
+                margin: 0 auto;
+                background-color: #fff;
+            }
+            .input-box-inner {
+                padding: 20px;
+            }
+            button {
+                font-family: 'Source Sans Pro', Arial, sans-serif;
+                font-size: 1.063em;
+                border: 0;
+				color: #000;
+                background-color: #d8d8d8;
+                width: 99%;
+                padding: 3px 1px;
+                border-radius: 0;
+                margin-bottom: 6px;
+            }
+            .output {
+                display: inline-block !important;
+                margin-right: 10px;
+            }
+			.add-remove {
+				position: absolute;
+				bottom: 20px;
+				right: 0;
+				background-color: #FFF;
+			}
+			.add-remove span {
+				cursor: pointer;
+				padding: 10px;
+				font-size: 2em;
+				line-height: 1;
+			}
+			@media screen and (max-width: 600px) , screen and (orientation: portrait) {
+				.color-3 .input-box-inner {
+                	padding: 10px 20px;
+            	}
+				.color-box {
+					float: none;
+					min-height: 80px;
+				}
+				.color-2 .color-box {
+					width: 100%;
+					height: 50%;
+				}
+				.color-3 .color-box {
+					width: 100%;
+					height: 33.333%;
+				}
+				.color-4 .color-box {
+					width: 100%;
+					height: 25%;
+				}
+				.color-5 .color-box {
+					width: 100%;
+					height: 20%;
+				}
+				.color-6 .color-box {
+					width: 100%;
+					height: 16.666%;
+				}
+			}
+			@media screen and (max-width: 400px) {
+				.input-box {
+					max-width: 100px;
+				}
+				.output-rgb {
+					display: none !important;
+				}
+				.output-label {
+					display: none;
+				}
+			}
+			@media screen and (min-width: 601px) {
+				.color-3 .input-box {
+					max-width: 100px;
+				}
+				.color-3 .output-rgb {
+					display: none !important;
+				}
+				.color-3 .output-label {
+					display: none;
+				}
+			}
+        </style>
+    </head>
+    <body class="color-1">
+		<div id="box-1" class="color-box">
+			<div class="input-box">
+				<div class="input-box-inner">
+					<div class="input">
+						<button class="reload">Reload</button>
+					</div>
+					<div class="output output-hex"></div>
+					<div class="output output-rgb"></div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script type="text/javascript">
+           	var randomColor = function(str) {
+                var chars = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+				var color = '';
+
+				for(i = 0; i < 6; i++) {
+					color += chars[Math.ceil(Math.random() * 15)];
+				}
+
+				return color;
+            }
+
+            // Pluto's comment: http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+            var hexToRgb = function(hex) {
+                return [(bigint = parseInt(hex, 16)) >> 16 & 255, bigint >> 8 & 255, bigint & 255].join();
+            }
+
+            var colorOutput = function(color, id) {
+                $('#box-' + id + ' .reload').attr('data-index', id);
+				$('#box-' + id).css('background-color', '#' + color);
+                $('#box-' + id + ' .output-hex').show().empty().append( '<span class="output-label">HEX: </span>#' + color );
+                $('#box-' + id + ' .output-rgb').show().empty().append( '<span class="output-label">RGB: </span>' + hexToRgb(color) );
+            }
+
+			var addBox = function() {
+                $('.color-box:last').clone().removeAttr('id').insertAfter('.color-box:last').attr( 'id', 'box-' + $('.color-box').length );
+				$('body').addClass('color-' + $('.color-box').length);
+				$('.color-box:last').find('.reload').data('index', $('.color-box').length);
+				colorOutput( randomColor(), $('.color-box').length );
+				checkButtons();
+            }
+
+			var removeBox = function() {
+				var length = $('.color-box').length;
+                $('.color-box:last').remove();
+				$('body').removeClass('color-' + length);
+				checkButtons();
+            }
+
+			var checkButtons = function() {
+				var add = '<span class="add">+</span>';
+				var remove = '<span class="remove">-</span>';
+
+				$('.add-remove').remove();
+
+				if ($('.color-box').length == 1) {
+					var remove = '';
+				}
+				if ($('.color-box').length >= 6) {
+					var add = '';
+				}
+
+				$('body').append('<div class="add-remove">' + remove + add +'</div>');
+			}
+
+            jQuery(document).ready(function($) {
+                colorOutput( randomColor(), 1 );
+				checkButtons();
+            });
+
+			jQuery(document).on('click', '.reload', function () {
+				colorOutput( randomColor(), $(this).data('index') );
+			});
+
+			jQuery(document).on('click', '.add', function () {
+				addBox();
+			});
+
+			jQuery(document).on('click', '.remove', function () {
+				removeBox();
+			});
+        </script>
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet">
+    </body>
+</html>
