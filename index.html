@@ -63,17 +63,28 @@
                 display: inline-block !important;
                 margin-right: 10px;
             }
-			.add-remove {
-				position: absolute;
-				bottom: 20px;
-				right: 0;
-				background-color: #FFF;
-			}
 			.add-remove span {
 				cursor: pointer;
 				padding: 10px;
 				font-size: 2em;
 				line-height: 1;
+				background-color: #FFF;
+				position: absolute;
+				top: 50%;
+				margin-top: -20px;
+				line-height: 20px;
+				width: 20px;
+				height: 20px;
+				display: inline-block;
+				text-align: center;
+				outline: none;
+			}
+			.add-remove .add {
+				right: 0;
+			}
+			.add-remove .remove {
+				left: 0;
+				line-height: 15px;
 			}
 			@media screen and (min-width: 601px) {
 				.color-3 .input-box {
@@ -167,16 +178,16 @@
             }
 
 			var addBox = function() {
-                $('.color-box:last').clone().removeAttr('id').insertAfter('.color-box:last').attr( 'id', 'box-' + $('.color-box').length );
+				$('.color-box:last').clone().removeAttr('id').insertAfter('.color-box:last').attr( 'id', 'box-' + $('.color-box').length );
 				$('body').addClass('color-' + $('.color-box').length);
 				$('.color-box:last').find('.reload').data('index', $('.color-box').length);
 				colorOutput( randomColor(), $('.color-box').length );
 				checkButtons();
-            }
+			}
 
 			var removeBox = function() {
 				var length = $('.color-box').length;
-                $('.color-box:last').remove();
+				$('.color-box:last').remove();
 				$('body').removeClass('color-' + length);
 				checkButtons();
             }
