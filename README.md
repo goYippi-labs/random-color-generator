@@ -13,6 +13,6 @@ Embedding via iframe:
 
 ---
 
-Based on two stackoverflow.com topics:
+Based on one stackoverflow.com topics:
 
 http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb

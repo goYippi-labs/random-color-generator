@@ -75,6 +75,17 @@
 				font-size: 2em;
 				line-height: 1;
 			}
+			@media screen and (min-width: 601px) {
+				.color-3 .input-box {
+					max-width: 100px;
+				}
+				.color-3 .output-rgb {
+					display: none !important;
+				}
+				.color-3 .output-label {
+					display: none;
+				}
+			}
 			@media screen and (max-width: 600px) , screen and (orientation: portrait) {
 				.color-3 .input-box-inner {
                 	padding: 10px 20px;
@@ -115,17 +126,6 @@
 					display: none;
 				}
 			}
-			@media screen and (min-width: 601px) {
-				.color-3 .input-box {
-					max-width: 100px;
-				}
-				.color-3 .output-rgb {
-					display: none !important;
-				}
-				.color-3 .output-label {
-					display: none;
-				}
-			}
         </style>
     </head>
     <body class="color-1">
@@ -148,7 +148,7 @@
 				var color = '';
 
 				for(i = 0; i < 6; i++) {
-					color += chars[Math.ceil(Math.random() * 15)];
+					color += chars[Math.floor(Math.random()*chars.length)];
 				}
 
 				return color;
@@ -202,15 +202,15 @@
 				checkButtons();
             });
 
-			jQuery(document).on('click', '.reload', function () {
+			jQuery(document).on('click', '.reload', function() {
 				colorOutput( randomColor(), $(this).data('index') );
 			});
 
-			jQuery(document).on('click', '.add', function () {
+			jQuery(document).on('click', '.add', function() {
 				addBox();
 			});
 
-			jQuery(document).on('click', '.remove', function () {
+			jQuery(document).on('click', '.remove', function() {
 				removeBox();
 			});
         </script>
