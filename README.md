@@ -16,4 +16,5 @@ Embedding via iframe:
 Based on two stackoverflow.com topics:
 
 http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+
 http://stackoverflow.com/questions/27398074/saving-a-data-from-html-form-to-text-file-with-jquery-javascript
