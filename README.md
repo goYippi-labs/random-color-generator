@@ -14,6 +14,7 @@ Embedding via iframe:
 ---
 
 Sortable by SortableJS, licensed under the MIT License
+
 https://github.com/SortableJS/Sortable
 
 ---
