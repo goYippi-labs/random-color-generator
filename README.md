@@ -13,6 +13,11 @@ Embedding via iframe:
 
 ---
 
+Sortable by SortableJS, licensed under the MIT License
+https://github.com/SortableJS/Sortable
+
+---
+
 Based on two stackoverflow.com topics:
 
 http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
